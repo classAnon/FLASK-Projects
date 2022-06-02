@@ -15,7 +15,6 @@ load_dotenv()
 
 app = Flask(__name__)
 
-port = int(os.getenv('PORT'))
 
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY")
@@ -24,6 +23,11 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(hours=8)
 
 client = MongoClient(os.getenv("CONNECTION_STRING"))
 db = client[os.getenv("DB_NAME")]
+
+
+@app.route('/', methods=["GET"])
+def index():
+	return "<h1>Welcome to our restful Api</h1>"
 
 
 @app.route('/register/', methods=["POST"])
@@ -145,4 +149,4 @@ def delete(id):
 	
 
 if __name__ == '__main__':
-	app.run(threaded=True, port=port)
+	app.run(threaded=True, port=5000)
