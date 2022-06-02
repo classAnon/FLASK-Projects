@@ -15,6 +15,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
+port = int(os.getenv('PORT'))
 
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = os.getenv("JWT_SECRET_KEY")
@@ -144,4 +145,4 @@ def delete(id):
 	
 
 if __name__ == '__main__':
-	app.run(threaded=True)
+	app.run(threaded=True, port=port)
