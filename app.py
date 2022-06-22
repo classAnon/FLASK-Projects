@@ -101,8 +101,7 @@ def retrieve_one_template(id):
 
 	get_jwt_identity()
 
-	current_collection = db.users
-	data = dumps(current_collection.find_one({"_id":ObjectId(id)}))
+	data = dumps(templates_collection.find_one({"_id":ObjectId(id)}))
 	if data:
 		return jsonify({'msg': 'Template fetched successfully', 'data':data}), 200
 	else:
@@ -117,10 +116,9 @@ def update_data(id):
 
 	req = request.get_json()
 
-	current_collection = db.users
-	template = current_collection.find_one({"_id":ObjectId(id)})
+	template = templates_collection.find_one({"_id":ObjectId(id)})
 	if template:
-		current_collection.update_one({"_id": template['_id']}, {'$set': {'template_name': req.get('template_name'), 'subject': req.get('subject'), 'body': req.get('body')}})
+		templates_collection.update_one({"_id": template['_id']}, {'$set': {'template_name': req.get('template_name'), 'subject': req.get('subject'), 'body': req.get('body')}})
 		return jsonify({'msg': 'template successfully updated.'}), 200
 	else:
 		return jsonify({'msg': 'nothing to update'}), 200
@@ -132,10 +130,9 @@ def delete(id):
 
 	get_jwt_identity()
 
-	current_collection = db.users
-	template = current_collection.find_one({"_id":ObjectId(id)})
+	template = templates_collection.find_one({"_id":ObjectId(id)})
 	if template:
-		current_collection.delete_one(template)
+		templates_collection.delete_one(template)
 		return jsonify({'msg': 'template successfully removed'}), 200
 	else:
 		return jsonify({'msg': 'template not found in collection'}), 500
