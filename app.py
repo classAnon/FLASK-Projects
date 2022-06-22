@@ -61,21 +61,19 @@ def login():
 @app.route('/template/', methods=["POST"])
 @jwt_required()
 def create_template():
-	
-	get_jwt_identity()
 
 	template = request.get_json()
 
 	template_data = {
 		"template_name": template["template_name"],
 		"subject": template["subject"],
-		"body": template["body"]	
+		"body": template["body"],
+		"user_id": get_jwt_identity()	
 	}
 
-	current_collection = db.users
-	temp = current_collection.find_one({"template_name": template["template_name"]})
+	temp = templates_collection.find_one({"template_name": template["template_name"]})
 	if not temp:
-		current_collection.insert_one(template)
+		templates_collection.insert_one(template_data)
 		return jsonify({'msg': 'Template created successfully'}), 201
 	else:
 		return jsonify({'msg': 'Template already in collection'}), 409
