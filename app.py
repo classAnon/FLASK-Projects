@@ -5,7 +5,7 @@ import datetime
 from flask_cors import cross_origin
 from dotenv import load_dotenv
 from pymongo import MongoClient
-from flask import Flask, request, jsonify
+from flask import Flask, make_response, request, jsonify
 from bson.objectid import ObjectId
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
@@ -23,11 +23,7 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(hours=8)
 
 client = MongoClient(os.getenv("CONNECTION_STRING"))
 db = client[os.getenv("DB_NAME")]
-
-
-@app.route('/', methods=["GET"])
-def index():
-	return "<h1>Welcome to our restful Api</h1>"
+templates_collection = db["templates"]
 
 
 @app.route('/register/', methods=["POST"])
@@ -89,17 +85,16 @@ def create_template():
 @jwt_required()
 def retrieve_all_templates():
 
-	get_jwt_identity()
+	templates = list(templates_collection.find({"user_id":get_jwt_identity()}))
 
 	holder = list()
-	current_collection = db.users
 
-	for i in current_collection.find():
+	for i in templates:
 		holder.append(i)
 		i['_id'] = str(i['_id'])
 
 	json_data = dumps(str(holder))
-	return jsonify({'msg': 'Templates fetched successfully', 'data':json_data}), 200
+	return make_response(json_data), 200
 
 
 @app.route('/template/<id>', methods=["GET"])
