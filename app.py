@@ -101,9 +101,14 @@ def retrieve_one_template(id):
 
 	get_jwt_identity()
 
-	data = dumps(templates_collection.find_one({"_id": id}))
+	template = list(templates_collection.find_one({"_id": id}))
+
+	holder = list()
+	holder.append(template)
+	template['_id'] = str(template['_id'])
+	data = dumps(str(holder))
 	if data:
-		return jsonify({'msg': 'Template fetched successfully', 'data':data}), 200
+		return make_response(data), 200
 	else:
 		return jsonify({'msg': 'No such template in current collection'}), 500
 		
