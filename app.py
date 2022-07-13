@@ -102,6 +102,7 @@ def retrieve_one_template(id):
 	get_jwt_identity()
 
 	template = templates_collection.find_one({"_id": id})
+	template['_id'] = str(template['_id'])
 	
 	if template:
 		return make_response(template), 200
