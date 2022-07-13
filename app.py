@@ -5,7 +5,7 @@ import datetime
 from flask_cors import cross_origin
 from dotenv import load_dotenv
 from pymongo import MongoClient
-from flask import Flask, make_response, redirect, request, jsonify, url_for
+from flask import Flask, make_response, request, jsonify
 from bson.objectid import ObjectId
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
@@ -134,8 +134,7 @@ def delete(id):
 	template = templates_collection.find_one({"user_id":get_jwt_identity()})
 	if template:
 		templates_collection.delete_one(template)
-		print('template successfully removed')
-		return url_for('retrieve_all_templates'), 200
+		return jsonify({'msg': 'template successfully removed'}), 200
 	else:
 		return jsonify({'msg': 'template not found in collection'}), 500
 	
