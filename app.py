@@ -100,7 +100,7 @@ def retrieve_all_templates():
 def retrieve_one_template(id):
 	
 	if get_jwt_identity():
-		return make_response(templates_collection.find_one({"_id": id})), 200
+		return make_response(templates_collection.find_one({"_id": str(id)})), 200
 	else:
 		return jsonify({'msg': 'No such template in current collection'}), 500
 		
