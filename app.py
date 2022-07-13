@@ -99,7 +99,9 @@ def retrieve_all_templates():
 @jwt_required()
 def retrieve_one_template(id):
 
-	template = templates_collection.find_one({"user_id":get_jwt_identity()})
+	get_jwt_identity()
+
+	template = templates_collection.find({"_id": id})
 	
 	if template:
 		return make_response(template), 200
