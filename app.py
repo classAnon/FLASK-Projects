@@ -134,7 +134,7 @@ def delete(id):
 	template = templates_collection.find_one({"user_id":get_jwt_identity()})
 	if template:
 		templates_collection.delete_one(template)
-		return jsonify({'msg': 'template successfully removed', 'Templates': redirect(url_for('retrieve_all_templates'))}), 200
+		return jsonify({'msg': 'template successfully removed', 'Templates': redirect(retrieve_all_templates())}), 200
 	else:
 		return jsonify({'msg': 'template not found in collection'}), 500
 	
