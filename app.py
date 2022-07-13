@@ -98,13 +98,9 @@ def retrieve_all_templates():
 @app.route('/template/<id>', methods=["GET"])
 @jwt_required()
 def retrieve_one_template(id):
-
-	get_jwt_identity()
-
-	template = templates_collection.find({"_id": id})
 	
-	if template:
-		return make_response(template), 200
+	if get_jwt_identity():
+		return make_response(templates_collection.find_one({"_id": id})), 200
 	else:
 		return jsonify({'msg': 'No such template in current collection'}), 500
 		
