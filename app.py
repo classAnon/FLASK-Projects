@@ -103,7 +103,7 @@ def retrieve_one_template(id):
 
 	data = dumps(templates_collection.find_one({"_id": ObjectId(id)}))
 	if data:
-		return jsonify({'data': data}), 200
+		return make_response(data), 200
 	else:
 		return jsonify({'msg': 'No such template in current collection'}), 500
 
