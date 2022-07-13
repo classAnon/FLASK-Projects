@@ -101,7 +101,7 @@ def retrieve_one_template(id):
 
 	get_jwt_identity()
 
-	data = dumps(templates_collection.find_one({"_id": str(id)}))
+	data = dumps(str(templates_collection.find_one({"_id": str(id)})))
 	if data:
 		return jsonify({'msg': 'Template fetched successfully', 'data':data}), 200
 	else:
