@@ -103,12 +103,10 @@ def retrieve_one_template(id):
 
 	template = list(templates_collection.find_one({"_id": id}))
 
-	holder = list()
-	holder.append(template)
 	template['_id'] = str(template['_id'])
-	data = dumps(str(holder))
-	if data:
-		return make_response(data), 200
+	
+	if template:
+		return make_response(template), 200
 	else:
 		return jsonify({'msg': 'No such template in current collection'}), 500
 		
